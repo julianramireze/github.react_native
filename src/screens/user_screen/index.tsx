@@ -123,29 +123,45 @@ const TabInformation = (user: any) => {
           />
         </View>
       ) : (
-        <ScrollView
-          style={{flex: 1, marginHorizontal: 10}}
-          showsVerticalScrollIndicator={false}>
-          <>
-            <InformationItem title="ID" value={userInfo?.id} />
-            <InformationItem
-              title="Usuario"
-              value={userInfo?.login.replace(/\b\w/g, (letter: any) =>
-                letter.toUpperCase(),
-              )}
-            />
-            <InformationItem title="Nombre" value={userInfo?.name} />
-            <InformationItem title="Correo" value={userInfo?.email} />
-            <InformationItem title="Seguidores" value={userInfo?.followers} />
-            <InformationItem
-              title="Repositorios publicos"
-              value={userInfo?.public_repos}
-            />
-            {userInfo?.location && (
-              <InformationItem title="Ubicación" value={userInfo?.location} />
-            )}
-          </>
-        </ScrollView>
+        <>
+          {userInfo === null ? (
+            <View style={styles.content_container}>
+              <Text>Usuario no encontrado</Text>
+            </View>
+          ) : (
+            <>
+              <ScrollView
+                style={{flex: 1, marginHorizontal: 10}}
+                showsVerticalScrollIndicator={false}>
+                <>
+                  <InformationItem title="ID" value={userInfo?.id} />
+                  <InformationItem
+                    title="Usuario"
+                    value={userInfo?.login.replace(/\b\w/g, (letter: any) =>
+                      letter.toUpperCase(),
+                    )}
+                  />
+                  <InformationItem title="Nombre" value={userInfo?.name} />
+                  <InformationItem title="Correo" value={userInfo?.email} />
+                  <InformationItem
+                    title="Seguidores"
+                    value={userInfo?.followers}
+                  />
+                  <InformationItem
+                    title="Repositorios publicos"
+                    value={userInfo?.public_repos}
+                  />
+                  {userInfo?.location && (
+                    <InformationItem
+                      title="Ubicación"
+                      value={userInfo?.location}
+                    />
+                  )}
+                </>
+              </ScrollView>
+            </>
+          )}
+        </>
       )}
       <View style={styles.button_container}>
         {userInfo?.blog && (
@@ -190,24 +206,36 @@ const TabRepositories = (user: any) => {
           />
         </View>
       ) : (
-        <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
-          <>
-            {userRepos.map((repo: any) => (
-              <RepositoryItem
-                key={repo.id}
-                image={repo.owner.avatar_url}
-                name={repo.name}
-                description={repo.description}
-                stars={repo.stargazers_count}
-                forks={repo.forks}
-                issues={repo.open_issues}
-                onPress={() => {
-                  Linking.openURL(repo.html_url);
-                }}
-              />
-            ))}
-          </>
-        </ScrollView>
+        <>
+          {userRepos && userRepos?.length === 0 ? (
+            <View style={styles.content_container}>
+              <Text>No hay repositorios</Text>
+            </View>
+          ) : (
+            <>
+              <ScrollView
+                style={{flex: 1}}
+                showsVerticalScrollIndicator={false}>
+                <>
+                  {userRepos.map((repo: any) => (
+                    <RepositoryItem
+                      key={repo.id}
+                      image={repo.owner.avatar_url}
+                      name={repo.name}
+                      description={repo.description}
+                      stars={repo.stargazers_count}
+                      forks={repo.forks}
+                      issues={repo.open_issues}
+                      onPress={() => {
+                        Linking.openURL(repo.html_url);
+                      }}
+                    />
+                  ))}
+                </>
+              </ScrollView>
+            </>
+          )}
+        </>
       )}
       <View style={styles.button_container}>
         <Button
@@ -243,14 +271,16 @@ const TabOrganizations = (user: any) => {
           />
         </View>
       ) : (
-        <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
-          <>
-            {userOrgs && userOrgs?.length === 0 ? (
-              <View style={styles.static_centered_bottom}>
-                <Text>No hay organizaciones</Text>
-              </View>
-            ) : (
-              <>
+        <>
+          {userOrgs && userOrgs?.length === 0 ? (
+            <View style={styles.content_container}>
+              <Text>No hay organizaciones</Text>
+            </View>
+          ) : (
+            <>
+              <ScrollView
+                style={{flex: 1}}
+                showsVerticalScrollIndicator={false}>
                 {userOrgs.map((org: any) => (
                   <OrganizationItem
                     key={org.id}
@@ -259,10 +289,10 @@ const TabOrganizations = (user: any) => {
                     description={org.description}
                   />
                 ))}
-              </>
-            )}
-          </>
-        </ScrollView>
+              </ScrollView>
+            </>
+          )}
+        </>
       )}
     </>
   );

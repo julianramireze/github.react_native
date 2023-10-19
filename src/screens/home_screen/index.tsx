@@ -38,7 +38,7 @@ const HomeScreen = ({navigation}: any) => {
     <>
       <StatusBar backgroundColor={Colors.black} />
       <SafeAreaView style={[ThemeStyles.screen]}>
-        <Text style={styles.title}>Home Screen</Text>
+        <Text style={styles.title}>Usuarios</Text>
         <Input
           value={search}
           placeholder="Buscar"
