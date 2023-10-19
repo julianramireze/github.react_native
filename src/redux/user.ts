@@ -13,7 +13,7 @@ export const getUsers = createAsyncThunk(
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
       const response = await userServices.get({
-        q: encodeURI(params.name),
+        q: params.name,
         page: params.page,
       });
       return response?.data?.items || [];
