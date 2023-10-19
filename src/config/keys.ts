@@ -1,1 +1,1 @@
-export const GITHUB_KEY = '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';
+export const GITHUB_KEY = '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';
