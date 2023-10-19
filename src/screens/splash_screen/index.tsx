@@ -18,7 +18,12 @@ const SplashScreen = ({navigation}: any) => {
     }, 1000);
 
     if (countDown === 0) {
-      dispatch(getUsers({}));
+      dispatch(
+        getUsers({
+          name: 'Q',
+          page: 1,
+        }),
+      );
     }
 
     return () => clearInterval(interval);
@@ -26,7 +31,7 @@ const SplashScreen = ({navigation}: any) => {
 
   useEffect(() => {
     if (successGetUsers) {
-      navigation.navigate(Routes.home);
+      navigation.replace(Routes.home);
     }
   }, [successGetUsers]);
 

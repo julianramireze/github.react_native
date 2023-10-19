@@ -3,22 +3,22 @@ import {Colors} from '../constants/colors';
 
 export const TEXT = StyleSheet.create({
   title: {
-    fontSize: 24,
+    fontSize: 17,
     fontWeight: 'bold',
     color: Colors.black,
   },
   subtitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
     color: Colors.black,
   },
   body: {
-    fontSize: 16,
+    fontSize: 13,
     fontWeight: 'normal',
     color: Colors.black,
   },
   button: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: 'bold',
     color: Colors.white,
   },

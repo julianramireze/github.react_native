@@ -2,13 +2,21 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import {createSlice} from '@reduxjs/toolkit';
 import userServices from '../services/user';
 
+type getUsersParams = {
+  name: string;
+  page: number;
+};
+
 export const getUsers = createAsyncThunk(
   'user/getUsers',
-  async (params: any, {rejectWithValue}) => {
+  async (params: getUsersParams, {rejectWithValue}) => {
     try {
-      const response = await userServices.get(params.name || 'Q');
-      console.log(response.data);
-      return response.data;
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await userServices.get({
+        q: encodeURI(params.name),
+        page: params.page,
+      });
+      return response?.data?.items || [];
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
@@ -32,7 +40,6 @@ export const getUserRepos = createAsyncThunk(
   async (params: any, {rejectWithValue}) => {
     try {
       const response = await userServices.getUserRepos(params.username);
-      console.log(response.data);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -55,7 +62,7 @@ export const getUserOrgs = createAsyncThunk(
 const userSlice = createSlice({
   name: 'user',
   initialState: {
-    users: [],
+    users: [] as any[],
     loadingGetUsers: false,
     successGetUsers: false,
     errorGetUsers: null,
@@ -72,7 +79,11 @@ const userSlice = createSlice({
     successGetUserOrgs: false,
     errorGetUserOrgs: null,
   },
-  reducers: {},
+  reducers: {
+    setUsers: (state, action) => {
+      state.users = action.payload;
+    },
+  },
   extraReducers: {
     [getUsers.pending.type]: state => {
       state.loadingGetUsers = true;
@@ -83,7 +94,10 @@ const userSlice = createSlice({
       state.loadingGetUsers = false;
       state.successGetUsers = true;
       state.errorGetUsers = null;
-      state.users = action.payload;
+      state.users =
+        state.users.length > 0
+          ? [...state.users, ...action.payload]
+          : action.payload;
     },
     [getUsers.rejected.type]: (state, action) => {
       state.loadingGetUsers = false;
@@ -140,5 +154,7 @@ const userSlice = createSlice({
     },
   },
 });
+
+export const {setUsers} = userSlice.actions;
 
 export default userSlice;
